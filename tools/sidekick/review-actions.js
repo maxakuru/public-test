@@ -43,7 +43,7 @@ export async function getReviews(retry) {
   });
   if(!resp.ok){
     if(resp.status === 404 && !retry) {
-      resp = await fetch(`/.snapshots/${SNAPSHOT_ID}`);
+      resp = await fetch(`/.snapshots/${SNAPSHOT_ID}`, { method: 'POST' });
       if(resp.ok) {
         return getReviews(true);
       }
