@@ -37,17 +37,11 @@ function toReview(snapshot) {
   return (review);
 }
 
-export async function getReviews(retry) {
+export async function getReviews() {
   let resp = await fetch(`/.snapshots/${SNAPSHOT_ID}/.manifest.json?ck=${Math.random()}`, {
     cache: 'no-store',
   });
   if(!resp.ok){
-    if(resp.status === 404 && !retry) {
-      resp = await fetch(`/.snapshots/${SNAPSHOT_ID}`, { method: 'POST' });
-      if(resp.ok) {
-        return getReviews(true);
-      }
-    }
     console.error('failed to fetch reviews: ', resp);
     throw Error('failed to fetch reviews');
   }
