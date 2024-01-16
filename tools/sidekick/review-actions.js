@@ -41,6 +41,14 @@ export async function getReviews() {
   const resp = await fetch(`/.snapshots/${SNAPSHOT_ID}/.manifest.json?ck=${Math.random()}`, {
     cache: 'no-store',
   });
+  if(!resp.ok){
+    if(resp.status === 404) {
+      return [];
+    }
+    console.error('failed to fetch reviews: ', resp);
+    throw Error('failed to fetch reviews');
+  }
+
   const snapshot = await resp.json();
   const review = toReview(snapshot);
   return ([review]);
