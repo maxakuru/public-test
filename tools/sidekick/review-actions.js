@@ -38,7 +38,7 @@ function toReview(snapshot) {
 }
 
 export async function getReviews(retry) {
-  const resp = await fetch(`/.snapshots/${SNAPSHOT_ID}/.manifest.json?ck=${Math.random()}`, {
+  let resp = await fetch(`/.snapshots/${SNAPSHOT_ID}/.manifest.json?ck=${Math.random()}`, {
     cache: 'no-store',
   });
   if(!resp.ok){
