@@ -16,13 +16,14 @@ jobs:
       - run: |
           echo "Payload: $JSON"
         env:
-          JSON: ${{ toJson(github.event.client_payload) }}
+          JSON: ${{ toJson(github.event.client_payload) }} | tr -d '\n'
   log:
     runs-on: ubuntu-latest
     steps:
       - id: format_payload
         run: |
-          echo "PAYLOAD_STR=$(echo ${{ env.JSON }} | tr -d '\n' | tr '"' '\"' )" >> $GITHUB_ENV
+          TEMP=$(echo ${{ env.JSON }} | tr -d '\n' | tr '"' '\"' )
+          echo "PAYLOAD_STR=$TEMP" >> $GITHUB_ENV
         env:
           JSON: ${{ toJson(github.event.client_payload) }}
       - run: |
