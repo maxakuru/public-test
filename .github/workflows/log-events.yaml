@@ -13,13 +13,17 @@ jobs:
   print:
     runs-on: ubuntu-latest
     steps:
-    - run: |
-        echo "Payload: ${{ toJson(github.event.client_payload) }}"
+      - run: |
+          echo "Payload: $JSON"
+        env:
+          JSON: ${{ toJson(github.event) }}
   log:
     runs-on: ubuntu-latest
     steps:
       - run: |
           curl -XPOST -vi \
             -H 'content-type: application/json' \
-            -d '{ "data": { "type": "${{ github.event.type }}", "payload": "${{ toJson(github.event.client_payload) }}" } }' \
+            -d "{ \"data\": { \"type\": \"${{ github.event.type }}\", \"payload\": \"$JSON\" } }" \
             'https://main--public-test--maxakuru.hlx.live/tools/event-log'
+        env:
+          JSON: ${{ toJson(github.event.client_payload) }}
