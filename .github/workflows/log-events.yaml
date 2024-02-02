@@ -21,4 +21,5 @@ jobs:
       - run: |
           curl -XPOST \
             -H 'content-type: application/json' \
-            -d '{ "data": { "type": "${{ github.event.event_type }}", "payload": "${{ github.event.client_payload }}" } }'
+            -d '{ "data": { "type": "${{ github.event.event_type }}", "payload": "${{ github.event.client_payload }}" } }' \
+            'https://main--public-test--maxakuru.hlx.live/tools/event-log'
