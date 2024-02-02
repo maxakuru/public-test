@@ -1,0 +1,24 @@
+on: 
+  repository_dispatch:
+    types:
+      - resource-published
+      - resources-published
+      - resource-unpublished
+      - resources-unpublished
+      - resource-previewed
+      - resources-previewed
+      - resource-unpreviewed
+      - resources-unpreviewed
+jobs:
+  print:
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Payload: ${{ github.event.client_payload }}"
+  log:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          curl -XPOST \
+            -H 'content-type: application/json' \
+            -d '{ "data": { "type": "${{ github.event.event_type }}", "payload": "${{ github.event.client_payload }}" } }'
