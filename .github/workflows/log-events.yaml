@@ -22,7 +22,7 @@ jobs:
     steps:
       - id: format_payload
         run: |
-          echo "PAYLOAD_STR=$(echo $JSON | tr -d '\n' | tr '"' '\"' )" >> $GITHUB_ENV
+          echo "PAYLOAD_STR=$(echo ${{ env.JSON }} | tr -d '\n' | tr '"' '\"' )" >> $GITHUB_ENV
         env:
           JSON: ${{ toJson(github.event.client_payload) }}
       - run: |
