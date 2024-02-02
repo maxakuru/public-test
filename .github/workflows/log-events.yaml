@@ -20,10 +20,15 @@ jobs:
   log:
     runs-on: ubuntu-latest
     steps:
+      - id: format_payload
+        run: |
+          echo "PAYLOAD_STR=$(echo $JSON | tr -d '\n' | tr '"' '\"' )" >> $GITHUB_ENV
+        env:
+          JSON: ${{ toJson(github.event.client_payload) }}
       - run: |
           curl -XPOST -vi \
             -H 'content-type: application/json' \
-            -d "{ \"data\": { \"type\": \"${{ github.event.action }}\", \"payload\": \"${{ JSON }}\" } }" \
+            -d '{ "data": { "type": "${{ github.event.action }}", "payload": "${{ env.PAYLOAD_STR }}" } }' \
             'https://main--public-test--maxakuru.hlx.live/tools/event-log'
         env:
-          JSON: ${{ toJson(github.event.client_payload) }}
+          PAYLOAD_STR: ${{ steps.format_payload.outputs.PAYLOAD_STR }}
